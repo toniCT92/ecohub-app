@@ -1,7 +1,20 @@
-from devices.camera import SmartCamera
+import asyncio
 
-cam = SmartCamera("cam_01", "Gorgeous Smart Camera", "Entrance")
-cam.connect()
-print(cam.send_update())
-cam.execute_command({"action": "TAKE_SNAPSHOT"})
-print(cam.send_update())
+from devices.bulb import SmartBulb
+from devices.thermostat import SmartThermostat
+from devices.camera import SmartCamera
+from controller import run_controller
+
+
+def main():
+    devices = [
+        SmartBulb("bulb_01", "Mysterious Smart Bulb", "Living Room"),
+        SmartThermostat("thermo_01", "Famous Smart Thermostat", "Bedroom"),
+        SmartCamera("cam_01", "Gorgeous Smart Camera", "Entrance")
+    ]
+
+    asyncio.run(run_controller(devices))
+
+
+if __name__ == "__main__":
+    main()
