@@ -28,7 +28,8 @@ class SmartThermostat(SmartDevice):
         return self._humidity
 
     def send_update(self) -> dict:
-        self._current_temp += random.uniform(-0.5, 0.5)
+        self._current_temp += random.uniform(1.0, 1.5)
+        # (-0.5, 0.5)
         self._humidity += random.uniform(-2.0, 2.0)
 
         update = super().send_update()
