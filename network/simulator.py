@@ -7,12 +7,13 @@ from analytics.pipeline import (
     average_temperature
 )
 
+
 EVENT_BUFFER = []
 
 
-async def device_loop(device, devices_map):
+async def device_loop(device, devices_map, data_queue):
     """
-    Async loop for a single device with analytics integration.
+    Async loop for a single device with analytics + storage integration.
     """
     while True:
         await asyncio.sleep(random.uniform(1, 5))
@@ -30,5 +31,7 @@ async def device_loop(device, devices_map):
         avg_temp = average_temperature(EVENT_BUFFER)
         if avg_temp is not None:
             print(f"📊 Average house temperature: {avg_temp:.2f}°C")
+
+        data_queue.put(raw_update)
 
         print(raw_update)

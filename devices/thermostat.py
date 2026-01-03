@@ -28,17 +28,30 @@ class SmartThermostat(SmartDevice):
         return self._humidity
 
     def send_update(self) -> dict:
-        self._current_temp += random.uniform(1.0, 1.5)
-        # (-0.5, 0.5)
-        self._humidity += random.uniform(-2.0, 2.0)
+        external_heat = random.uniform(0.3, 1.2)
+
+        cooling_effect = 0.0
+        if self._current_temp > self._target_temp:
+            cooling_effect = random.uniform(0.4, 0.9)
+
+        self._current_temp += external_heat
+        self._current_temp -= cooling_effect
+
+        self._current_temp += random.uniform(-0.2, 0.2)
+
+        self._current_temp = max(10.0, min(self._current_temp, 45.0))
+
+        self._humidity += random.uniform(-1.5, 1.5)
+        self._humidity = max(20.0, min(self._humidity, 70.0))
 
         update = super().send_update()
         update["payload"] = {
-            "current_temp": self._current_temp,
+            "current_temp": round(self._current_temp, 2),
             "target_temp": self._target_temp,
-            "humidity": self._humidity
+            "humidity": round(self._humidity, 2)
         }
         return update
+
 
     def execute_command(self, command: dict):
         """
