@@ -8,9 +8,9 @@ from controller import run_controller
 
 def main():
     devices = [
-        SmartBulb("bulb_01", "Mysterious Smart Bulb", "Living Room"),
-        SmartThermostat("thermo_01", "Famous Smart Thermostat", "Bedroom"),
-        SmartCamera("cam_01", "Gorgeous Smart Camera", "Entrance")
+        SmartBulb("bulb_01", "Smart Bulb", "Living Room"),
+        SmartThermostat("thermo_01", "Thermostat", "Bedroom"),
+        SmartCamera("cam_01", "Smart Camera", "Entrance")
     ]
 
     asyncio.run(run_controller(devices))

@@ -6,9 +6,16 @@ class SmartThermostat(SmartDevice):
     def __init__(self, device_id: str, name: str, location: str):
         super().__init__(device_id, name, location)
         self._device_type = "THERMOSTAT"
-        self._current_temp = random.uniform(18.0, 25.0)
+
+        self._current_temp = random.uniform(22.0, 24.0)
         self._target_temp = 24.0
-        self._humidity = random.uniform(30.0, 60.0)
+        self._humidity = random.uniform(40.0, 60.0)
+
+        self._mode = "NORMAL"   
+        self._stabilize_ticks = 0
+
+
+
     @property
     def current_temp(self):
         return self._current_temp
@@ -27,17 +34,32 @@ class SmartThermostat(SmartDevice):
     def humidity(self):
         return self._humidity
 
+
+
     def send_update(self) -> dict:
-        external_heat = random.uniform(0.3, 1.2)
 
-        cooling_effect = 0.0
-        if self._current_temp > self._target_temp:
-            cooling_effect = random.uniform(0.4, 0.9)
+        if self._mode == "NORMAL":
+            self._current_temp += random.uniform(0.8, 1.3)
 
-        self._current_temp += external_heat
-        self._current_temp -= cooling_effect
+            if self._current_temp >= 30.0:
+                self._mode = "OVERHEAT"
 
-        self._current_temp += random.uniform(-0.2, 0.2)
+        elif self._mode == "OVERHEAT":
+            self._mode = "COOLING"
+
+        elif self._mode == "COOLING":
+            self._current_temp -= random.uniform(2.5, 4.0)
+
+            if self._current_temp <= self._target_temp + 0.3:
+                self._mode = "STABILIZE"
+                self._stabilize_ticks = random.randint(3, 5)
+
+        elif self._mode == "STABILIZE":
+            self._current_temp += random.uniform(-0.15, 0.15)
+            self._stabilize_ticks -= 1
+
+            if self._stabilize_ticks <= 0:
+                self._mode = "NORMAL"
 
         self._current_temp = max(10.0, min(self._current_temp, 45.0))
 
@@ -53,14 +75,9 @@ class SmartThermostat(SmartDevice):
         return update
 
 
-    def execute_command(self, command: dict):
-        """
-        Supported commands:
-        - {"action": "SET_TARGET_TEMP", "value": float}
-        """
-        action = command.get("action")
 
-        if action == "SET_TARGET_TEMP":
+    def execute_command(self, command: dict):
+        if command.get("action") == "SET_TARGET_TEMP":
             self.target_temp = command.get("value", self._target_temp)
             print(f"{self.name}: target temperature set to {self._target_temp:.1f}°C")
         else:

@@ -33,7 +33,6 @@ class SmartCamera(SmartDevice):
         else:
             self._battery_level -= random.uniform(0.1, 0.3)
 
-        # Protect battery bounds
         self._battery_level = max(0.0, min(100.0, self._battery_level))
 
         update = super().send_update()

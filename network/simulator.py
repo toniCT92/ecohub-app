@@ -30,7 +30,7 @@ async def device_loop(device, devices_map, data_queue):
 
         avg_temp = average_temperature(EVENT_BUFFER)
         if avg_temp is not None:
-            print(f"📊 Average house temperature: {avg_temp:.2f}°C")
+            print(f"Average house temperature: {avg_temp:.2f}°C")
 
         data_queue.put(raw_update)
 

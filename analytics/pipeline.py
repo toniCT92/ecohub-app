@@ -11,9 +11,7 @@ class DeviceEvent:
     payload: Dict[str, Any]
 
 def map_to_event(raw_update: dict) -> DeviceEvent:
-    """
-    Map a raw device update dictionary to a DeviceEvent dataclass.
-    """
+    
     return DeviceEvent(
         device_id=raw_update["device_id"],
         device_type=raw_update["type"],
@@ -21,10 +19,7 @@ def map_to_event(raw_update: dict) -> DeviceEvent:
         payload=raw_update["payload"]
     )
 def is_high_temperature(event: DeviceEvent, threshold: float = 30.0) -> bool:
-    """
-    Filter condition for high temperature events.
-    Applies only to THERMOSTAT devices.
-    """
+    
     if event.device_type != "THERMOSTAT":
         return False
 
@@ -33,10 +28,7 @@ def is_high_temperature(event: DeviceEvent, threshold: float = 30.0) -> bool:
 
 
 def is_low_battery(event: DeviceEvent, threshold: float = 10.0) -> bool:
-    """
-    Filter condition for low battery events.
-    Applies only to CAMERA devices.
-    """
+    
     if event.device_type != "CAMERA":
         return False
 
@@ -44,10 +36,7 @@ def is_low_battery(event: DeviceEvent, threshold: float = 10.0) -> bool:
     return battery is not None and battery < threshold
 
 def average_temperature(events: Iterable[DeviceEvent]) -> Optional[float]:
-    """
-    Reduce thermostat events to an average temperature.
-    Returns None if no thermostat events are present.
-    """
+   
     temps = list(
         map(
             lambda e: e.payload.get("current_temp"),
@@ -63,9 +52,7 @@ def average_temperature(events: Iterable[DeviceEvent]) -> Optional[float]:
 
 
 def handle_automation(event: DeviceEvent, devices: dict):
-    """
-    Trigger automation rules based on critical events.
-    """
+    
     if is_high_temperature(event):
         print("⚠️ ALERT: High Temp detected! Triggering cooling...")
 

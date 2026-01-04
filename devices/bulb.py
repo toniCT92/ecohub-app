@@ -6,7 +6,7 @@ class SmartBulb(SmartDevice):
         super().__init__(device_id, name, location)
         self._device_type = "BULB"
         self._is_on = False
-        self._brightness = 100  # range is from 0 to 100
+        self._brightness = 100 
 
     @property
     def is_on(self):

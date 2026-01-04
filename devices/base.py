@@ -32,14 +32,12 @@ class SmartDevice(ABC):
         return self._is_connected
 
     def connect(self):
-        """Simulate connecting the device to the network"""
         print(f"{self._name} is connecting...")
         time.sleep(random.uniform(0.5, 1.5))
         self._is_connected = True
         print(f"{self._name} connected successfully.")
 
     def send_update(self) -> dict:
-        """Base update structure (extended by subclasses)"""
         if not self._is_connected:
             raise RuntimeError("Device must be connected before sending updates")
 
@@ -52,5 +50,4 @@ class SmartDevice(ABC):
 
     @abstractmethod
     def execute_command(self, command: dict):
-        """Execute a command sent by the controller"""
         pass
