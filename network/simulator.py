@@ -12,9 +12,7 @@ EVENT_BUFFER = []
 
 
 async def device_loop(device, devices_map, data_queue):
-    """
-    Async loop for a single device with analytics + storage integration.
-    """
+    
     while True:
         await asyncio.sleep(random.uniform(1, 5))
 

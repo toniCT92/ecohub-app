@@ -31,12 +31,7 @@ class SmartBulb(SmartDevice):
         return update
 
     def execute_command(self, command: dict):
-        """
-        Supported commands:
-        - {"action": "ON"}
-        - {"action": "OFF"}
-        - {"action": "SET_BRIGHTNESS", "value": int}
-        """
+        
         action = command.get("action")
 
         if action == "ON":

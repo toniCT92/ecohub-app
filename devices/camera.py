@@ -44,10 +44,7 @@ class SmartCamera(SmartDevice):
         return update
 
     def execute_command(self, command: dict):
-        """
-        Supported commands:
-        - {"action": "TAKE_SNAPSHOT"}
-        """
+        
         action = command.get("action")
 
         if action == "TAKE_SNAPSHOT":
